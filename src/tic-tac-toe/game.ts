@@ -1,4 +1,7 @@
-type Player = 'X' | 'Y';
+export enum Player {
+    X='X',
+    Y='Y',
+}
 
 export class Cell {
     public occupier?: Player;
@@ -10,7 +13,7 @@ export class Cell {
 
 export class TicTacToe {
     private board: Cell[][];
-    private lastToPlay: Player;
+    private lastToPlay?: Player;
 
     constructor() {
         const board = [];
@@ -51,11 +54,17 @@ export class TicTacToe {
             }
             newBoard.push(inner);
         }
+        this.board = newBoard;
         this.lastToPlay = player;
-        return {newBoard, nextToPlay: this.getOtherPlayer(player)}
+        return {newBoard, nextToPlay: this.getOtherPlayer(player), result: this.calculateResult()}
     }
 
     private getOtherPlayer(player: Player) {
-        return player === 'X' ? 'Y' : 'X';
+        return player === Player.X ? Player.Y : Player.X;
+    }
+
+    private calculateResult() {
+
+        return Player.X;
     }
 }
