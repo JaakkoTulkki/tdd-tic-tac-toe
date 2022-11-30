@@ -1,4 +1,5 @@
 import {Cell, Player, TicTacToe} from "./game";
+import {Simulate} from "react-dom/test-utils";
 
 
 describe('TicTacToe', function () {
@@ -72,17 +73,25 @@ describe('TicTacToe', function () {
     });
 
     it('should tell when the game is over and there is a winner', function () {
-        const moves = ['1-1', '0-1', '0-0', '2-0', '2-2'];
-        let nextToPlay = Player.X;
-        let gameResult;
-        moves.slice(0, moves.length - 1).forEach((coordinates, index) => {
-            const {nextToPlay: next, result} = game.tick(nextToPlay, coordinates);
-            nextToPlay = next;
-            gameResult = result;
-            expect(gameResult).toEqual(undefined);
-        });
-        game.tick(nextToPlay, moves[moves.length - 1]);
-        expect(gameResult).toEqual(Player.X);
+        const plays = [
+            ['0-0', '1-0', '0-1', '1-1', '0-2'],
+            ['0-0', '0-1', '1-0', '1-1', '2-0'],
+            ['1-1', '0-1', '0-0', '2-0', '2-2'],
+            ['1-1', '0-1', '0-2', '2-1', '2-0'],
+        ];
+        plays.forEach(moves => {
+            const game = new TicTacToe();
+            let nextToPlay = Player.X;
+            let gameResult;
+            moves.slice(0, moves.length - 1).forEach((coordinates, index) => {
+                const {nextToPlay: next, result} = game.tick(nextToPlay, coordinates);
+                nextToPlay = next;
+                gameResult = result;
+                expect(gameResult).toEqual(undefined);
+            });
+            const {result} = game.tick(nextToPlay, moves[moves.length - 1]);
+            expect(result).toEqual(Player.X);
+        })
     });
 
 });

@@ -64,7 +64,30 @@ export class TicTacToe {
     }
 
     private calculateResult() {
+        // horizontally
+        for (let i = 0; i < 3; i++) {
+            const first = this.board[i][0].occupier;
+            if(first && this.board[i].every(e => e.occupier === first)) {
+                return first;
+            }
+        }
+        // vertically
+        for (let i = 0; i < 3; i++) {
+            const first = this.board[0][i].occupier;
+            if(first && this.board[1][i].occupier === first && (this.board[1][i].occupier === this.board[2][i].occupier)) {
+                return first;
+            }
+        }
 
-        return Player.X;
+        const topLeftToBottomRight = new Set([this.board[0][0].occupier, this.board[1][1].occupier, this.board[2][2].occupier]);
+        const topRightToBottomLeft = new Set([this.board[0][2].occupier, this.board[1][1].occupier, this.board[2][0].occupier]);
+        if(topLeftToBottomRight.size === 1) {
+            return Array.from(topLeftToBottomRight.values())[0];
+        }
+        if(topRightToBottomLeft.size === 1) {
+            return Array.from(topRightToBottomLeft.values())[0];
+        }
+
+        return undefined;
     }
 }
